@@ -9,18 +9,34 @@ export class NotesService {
   constructor(@InjectModel('Note') private noteModel: Model<NoteDocument>) {}
 
   async create(dto: CreateNoteDto, authorId: string): Promise<Note> {
-    const createdNote = new this.noteModel({
-      ...dto,
-      authorId,
-    });
-    return createdNote.save();
+    dto.authorId = new Types.ObjectId(authorId);
+    return this.noteModel.create(dto);
   }
   //
 
   async findAll(): Promise<Note[]> {
-    return this.noteModel.find({ isPrivate: false });
+    return this.noteModel
+      .find({ isPrivate: false })
+      .populate('authorId', 'email name');
   }
-  async findByAuthorId(userId: string) {
-    return this.noteModel.find({ authorId: new Types.ObjectId(userId) });
+  async findByAuthorId(authorId: string) {
+    return this.noteModel
+      .find({ authorId: new Types.ObjectId(authorId) })
+      .populate('authorId', 'email name');
+  }
+
+  // update
+
+  async updateNote(
+    id: string,
+    dto: Partial<CreateNoteDto>,
+  ): Promise<Note | null> {
+    console.log(id, 'service id');
+    return await this.noteModel.findByIdAndUpdate(id, dto, { new: true });
+  }
+  // delete
+
+  async deleteNote(id: string): Promise<Note | null> {
+    return await this.noteModel.findByIdAndDelete(id);
   }
 }
