@@ -20,7 +20,7 @@ export class NotesService {
   async findAll(): Promise<Note[]> {
     return this.noteModel.find({ isPrivate: false });
   }
-  async findByAuthorId(userId: string): Promise<Note[]> {
+  async findByAuthorId(userId: string) {
     return this.noteModel.find({ authorId: new Types.ObjectId(userId) });
   }
 }
