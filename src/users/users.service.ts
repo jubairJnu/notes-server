@@ -4,12 +4,19 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Model } from 'mongoose';
 import { UserDocument } from './schemas/user.schema';
+import { AppError } from 'src/common/errors/app-error';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
 
   async create(createUserDto: CreateUserDto) {
+    const isExist = await this.userModel.findOne({
+      email: createUserDto.email,
+    });
+    if (isExist) {
+      throw new AppError('User with this email already exists', 400);
+    }
     return await this.userModel.create(createUserDto);
   }
 
@@ -17,8 +24,8 @@ export class UsersService {
     return await this.userModel.find();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} user`;
+  findOne(email: string) {
+    return this.userModel.findOne({ email });
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {

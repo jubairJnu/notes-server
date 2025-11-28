@@ -15,6 +15,7 @@ async function bootstrap() {
     console.error('❌ Invalid PORT value in .env. Must be a number.');
     process.exit(1);
   }
+
   app.useGlobalFilters(new AllExceptionFilter());
   await app.listen(port);
   console.log(` Server running on http://localhost:${port}`);
