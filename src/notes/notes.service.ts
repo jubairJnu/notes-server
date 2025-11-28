@@ -17,9 +17,10 @@ export class NotesService {
   }
   //
 
-  async findAll(userId: string): Promise<Note[]> {
-    return this.noteModel.find({
-      $or: [{ isPrivate: false }, { authorId: new Types.ObjectId(userId) }],
-    });
+  async findAll(): Promise<Note[]> {
+    return this.noteModel.find({ isPrivate: false });
+  }
+  async findByAuthorId(userId: string): Promise<Note[]> {
+    return this.noteModel.find({ authorId: new Types.ObjectId(userId) });
   }
 }
