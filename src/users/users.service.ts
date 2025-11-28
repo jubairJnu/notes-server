@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Model } from 'mongoose';
 import { UserDocument } from './schemas/user.schema';
-import { AppError } from 'src/common/errors/app-error';
+import { AppError } from "../common/errors/app-error";
 
 @Injectable()
 export class UsersService {
