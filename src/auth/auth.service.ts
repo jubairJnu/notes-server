@@ -16,7 +16,6 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, password: string): Promise<any> {
-    console.log(email, 'email');
     const user = await (this.usersService.findOne(
       email,
     ) as any as Promise<Iuser>);
@@ -26,6 +25,6 @@ export class AuthService {
     const jwtPayload = { email: user.email, id: user._id };
     const token = this.jwtService.sign(jwtPayload);
 
-    return token;
+    return {token};
   }
 }
